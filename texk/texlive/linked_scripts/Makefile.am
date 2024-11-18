@@ -148,6 +148,7 @@ texmf_other_scripts = \
 	epspdf/epspdftk.tcl \
 	epstopdf/epstopdf.pl \
 	exceltex/exceltex \
+	extractbb/extractbb.lua \
 	fig4latex/fig4latex \
 	findhyph/findhyph \
 	fontools/afm2afm \
