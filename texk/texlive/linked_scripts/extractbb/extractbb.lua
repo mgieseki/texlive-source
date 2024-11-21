@@ -7,7 +7,7 @@
 -- A wrapper script to allow you to choose which implementation of extractbb to
 -- use. Should hopefully be replaced with the ``scratch'' file in TeX Live 2025.
 --
--- v1.0.0 (2024-11-17) %%version %%dashdate
+-- v1.0.5 (2024-11-21) %%version %%dashdate
 
 ---------------------
 --- Configuration ---
@@ -19,6 +19,21 @@ local DEFAULT = "wrapper"
 -----------------
 --- Execution ---
 -----------------
+
+-- Send the error messages to stderr.
+local function error(...)
+    -- Header
+    io.stderr:write("! extractbb ERROR: ")
+
+    -- Message
+    for i = 1, select("#", ...) do
+        io.stderr:write(tostring(select(i, ...)), " ")
+    end
+
+    -- Flush and exit
+    io.stderr:flush()
+    os.exit(1)
+end
 
 -- Get the value of the environment variable that decides which version to run.
 local env_choice = os.env["TEXLIVE_EXTRACTBB"]
@@ -43,8 +58,7 @@ local choice_mapping = {
 local choice = choice_mapping[env_choice] or choice_mapping[DEFAULT]
 
 if not choice then
-    print("No implementation of extractbb found. Exiting.")
-    os.exit(1)
+    error("No implementation of extractbb found.")
 end
 
 -- Make sure that the script is not writable.
@@ -52,8 +66,7 @@ if kpse.out_name_ok_silent_extended(choice) then
     if os.env["TEXLIVE_EXTRACTBB_UNSAFE"] == "unsafe" then
         -- If we're running in development mode, then we can allow this.
     else
-        print("Refusing to run a writable script. Exiting.")
-        os.exit(1)
+        error("Refusing to run a writable script.")
     end
 end
 
@@ -63,8 +76,12 @@ local current_dir, current_name = arg[0]:match(split_dir_pattern)
 local choice_dir, choice_name = choice:match(split_dir_pattern)
 
 if current_dir ~= choice_dir then
-    print("Refusing to run a script from a different directory. Exiting.")
-    os.exit(1)
+    -- Resolve the symlinks and try again
+    current_dir = lfs.symlinkattributes(current_dir, "target")
+    choice_dir = lfs.symlinkattributes(choice_dir, "target")
+    if current_dir ~= choice_dir then
+        error("Refusing to run a script from a different directory.")
+    end
 end
 
 -- And run it.
