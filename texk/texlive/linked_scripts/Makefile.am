@@ -111,6 +111,7 @@ texmf_other_scripts = \
 	authorindex/authorindex \
 	bib2gls/bib2gls.sh \
 	bib2gls/convertgls2bib.sh \
+	bib2gls/datatool2bib.sh \
 	bibcop/bibcop.pl \
 	bibtexperllibs/ltx2unitxt \
 	bookshelf/bookshelf-listallfonts \
