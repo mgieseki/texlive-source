@@ -1,7 +1,7 @@
 ## $Id$
 ## Makefile.am for the TeX Live subdirectory texk/texlive/linked_scripts/
 ##
-## Copyright 2016-2024 Karl Berry <tex-live@tug.org>
+## Copyright 2016-2025 Karl Berry <tex-live@tug.org>
 ## Copyright 2009-2015 Peter Breitenlohner <tex-live@tug.org>
 ## You may freely use, modify and/or distribute this file.
 ##
@@ -106,6 +106,7 @@ texmf_other_scripts = \
 	accfonts/vpl2ovp \
 	accfonts/vpl2vpl \
 	albatross/albatross.sh \
+	aomart/aom-fullref.pl \
 	arara/arara.sh \
 	attachfile2/pdfatfi.pl \
 	authorindex/authorindex \
